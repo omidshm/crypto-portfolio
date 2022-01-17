@@ -43,16 +43,14 @@ class coingecko(iClient):
     @staticmethod
     def validate_batch_symbols(coin_dict, symbol_list) -> list:
         validation_result = []
-        validated_ids = []
         for symbol in symbol_list:
             try:
                 id = coin_dict[symbol]
-                validation_result.append(True)
-                validated_ids.append(id)
+                validation_result.append(id)
             except:
-                validation_result.append(False)
+                validation_result.append('')
         
-        return validation_result, validated_ids
+        return validation_result
 
     @staticmethod
     def create_price_list(validated_symbols):
@@ -69,28 +67,55 @@ class coingecko(iClient):
 
         else: return f'Coin {coin_symbol} not exist'
 
+    def get_batch_price_dict(self, coin_symbols_list:list) -> dict:
+        validated_symbols = coingecko.validate_batch_symbols(self._coins_id_dict, coin_symbols_list)
+        validated_coin_ids = ','.join(validated_symbols)
 
-    def get_batch_price(self, coin_symbols_list):
-        validated_symbols,validated_ids_list = coingecko.validate_batch_symbols(self._coins_id_dict, coin_symbols_list)
-        price_list = []
-        validated_ids_str = ','.join(validated_ids_list)
-
-        coin_objects = req.get(self._base_api+"/coins/markets?vs_currency=usd&ids="+validated_ids_str+"&sparkline=true").json()
+        coin_objects = req.get(self._base_api+"/coins/markets?vs_currency=usd&ids="+validated_coin_ids).json()
         
-        i = 0
-        for symbol in validated_symbols:
-            if symbol == True:
-                current_price = coin_objects[i]['current_price']
-                price_list.append(current_price)
-            else:
-                price_list.append(0)
+        price_dict = {}
+        for item in coin_objects:
+            item_id = item['id']
+            item_price = item['current_price']
 
-            
-            #behine sazi in i
-            i = i+1
+            price_dict[item_id] = item_price
+
+        return price_dict
+    
+    # need complete and enhance
+    # def get_batch_price_list(self, coin_symbols_list):
+    #     validated_symbols = coingecko.validate_batch_symbols(self._coins_id_dict, coin_symbols_list)
+    #     price_list = []
+    #     validated_coin_ids = ','.join(validated_symbols)
+
+    #     coin_objects = req.get(self._base_api+"/coins/markets?vs_currency=usd&ids="+validated_coin_ids).json()
         
-        return price_list
+    #     price_dict = {}
+    #     for item in coin_objects:
+    #         item_id = item['id']
+    #         item_price = item['current_price']
 
+    #         price_dict[item_id] = item_price
+
+    #     for item in validated_symbols:
+    #         pass
+
+
+
+    #     # i = 0
+    #     # for symbol in validated_symbols:
+    #     #     if symbol == '':
+    #     #         price_list.append(0)
+    #     #     else:  
+    #     #         current_price = coin_objects[i]['current_price']
+    #     #         price_list.append(current_price)
+    #     #         #behine sazi in i
+    #     #         i = i+1
+        
+    #     return price_list
+
+
+    
 
     def get_mcap(self):pass
 
