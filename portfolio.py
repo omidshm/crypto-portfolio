@@ -1,4 +1,4 @@
-import requests as req
+from apiclient import coingecko
 
 class Portfolio:
     pass
@@ -14,6 +14,11 @@ class Item:
         item_string = f'Coin: {self.itemName} \nAmount: {self.amount} \nBuy Price: {self.buyPrice} \nVolume: {self.Volume}'
         return item_string
 
-    def get_price(self) -> float:
-        price = req.get()
-        self.price = price
+    @property
+    def price(self):
+        price = coingecko().get_price(self.itemName)
+        return price
+
+    @property
+    def item_statics(self):
+        return [self.itemName,self.amount,self.buyPrice,self.Volume]
