@@ -75,7 +75,7 @@ class coingecko(iClient):
         
         price_dict = {}
         for item in coin_objects:
-            item_id = item['id']
+            item_id = item['symbol']
             item_price = item['current_price']
 
             price_dict[item_id] = item_price
