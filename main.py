@@ -22,7 +22,7 @@ def main():
         user_input = int(input('\nEnter a Number you want:'))
         
         if user_input == 0: break
-        elif user_input ==1: print(Portfolio.items_list)
+        elif user_input ==1: print(Portfolio.portfo_table())
 
         elif user_input ==2:
             itemname = input('\nEnter Item Name:')

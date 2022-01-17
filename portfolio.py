@@ -41,7 +41,28 @@ class Portfolio:
             return result
 
     
-    def portfo_table(self):pass
+    def portfo_table(self):
+        if self.items == []:
+            return 'Portfolio its clean. Lets add an item'
+        else:
+            items_table = PrettyTable()
+
+            items_table.field_names = ["No.", "Symbol", "Amount", "Buy Price", "Volume", "Price"]
+            items_object = self.items_list
+
+            i = 1
+            for item_object in items_object:
+                item_name = item_object['symbol']
+                item_amount = item_object['amount']
+                item_buyprice = item_object['buy_price']
+                item_volume = item_object['volume']
+                item_price = item_object['current_price']
+                items_table.add_row([i,item_name,item_amount,item_buyprice,item_volume,item_price])
+
+
+                i = i+1
+
+            return items_table
 
 
 
