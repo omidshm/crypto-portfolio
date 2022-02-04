@@ -1,6 +1,5 @@
 from apiclient import coingecko
 from prettytable import PrettyTable
-
 class Portfolio:
     def __init__(self) -> None:
         self.items = []
