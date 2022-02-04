@@ -63,6 +63,8 @@ class Portfolio:
                 i = i+1
 
             return items_table
+    def calculate_pnl(self):
+        pass
 
 
 
